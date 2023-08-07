@@ -97,7 +97,8 @@ const UserFormModal = ({ isOpen, onClose }: UserFormModalProps): ReactElement =>
       isDriver: false,
       license: null,
       licenseCategory: null,
-      licenseExpiration: null
+      licenseExpiration: null,
+      removed: false
     })
   }, [userForm, isOpen])
 
