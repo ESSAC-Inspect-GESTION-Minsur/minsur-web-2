@@ -93,7 +93,7 @@ const FieldForm = (): ReactElement => {
         />
 
         {
-          field.type === FieldType.LIST && formAction === 'update' && (
+          field.type === FieldType.LIST && (
             <div className='mt-2'>
               <FieldValuesForm values={values} setValues={setValues}/>
             </div>
