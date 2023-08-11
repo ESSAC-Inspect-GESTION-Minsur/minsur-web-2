@@ -25,7 +25,7 @@ const getSupervisionsFromJson = (supervisionsJson: string): SUPERVISION_STATE =>
 }
 
 const getInitialState = (): SUPERVISION_STATE => {
-  const supervisionsJson = sessionStorage.getItem('supervisions')
+  const supervisionsJson = sessionStorage.getItem('supervisions-request')
   if (!supervisionsJson) {
     return DEFAULT_STATE
   }
@@ -55,7 +55,7 @@ const supervisionsSlice = createSlice<SUPERVISION_STATE, SliceCaseReducers<SUPER
       .addCase(findAllSupervisions.fulfilled, (state, action) => {
         state.supervisions = action.payload
 
-        const supervisionJson = JSON.parse(sessionStorage.getItem('supervisions') ?? '')
+        const supervisionJson = JSON.parse(sessionStorage.getItem('supervisions-request') ?? '')
 
         state.lastRequest = supervisionJson.lastRequest ? new Date(supervisionJson.lastRequest) : new Date()
         state.dateRange = supervisionJson.dateRange ? DateRange.fromJson(supervisionJson.dateRange) : new DateRange()

@@ -22,11 +22,11 @@ const Home = (): ReactElement => {
   const [dateRange, setDateRange] = useState<DateRange>(new DateRange())
 
   useEffect(() => {
-    const supervisionsJson = sessionStorage.getItem('supervisions')
+    const supervisionsJson = sessionStorage.getItem('supervisions-requests')
     if (!supervisionsJson) {
       void dispatch(findAllSupervisions({ dateRange: new DateRange(), profileId: '' }))
     }
-  }, [supervisions])
+  }, [])
 
   useEffect(() => {
     groupSupervisionsByTemplate()
@@ -115,7 +115,7 @@ const Home = (): ReactElement => {
           <p className='uppercase font-semibold text-xl'>Cantidad de Reportes</p>
           {Array.from(supervisionsByTemplate.entries()).length > 0
             ? (
-              <div className='flex gap-5 mt-5'>
+              <div className='flex gap-5 mt-5 flex-wrap'>
                 {
                   Array.from(supervisionsByTemplate.entries()).map(([key, value]) => {
                     return (

@@ -36,7 +36,7 @@ export default class SupervisionsServices extends AppServices {
 }
 
 const createSupervisionStorage = (supervisions: Supervision[], dateRange: DateRange): void => {
-  sessionStorage.setItem('supervisions', JSON.stringify({
+  sessionStorage.setItem('supervisions-request', JSON.stringify({
     supervisions,
     dateRange: dateRange.toObject(),
     lastRequest: new Date()
