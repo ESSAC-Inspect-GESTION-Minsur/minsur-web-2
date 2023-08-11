@@ -8,6 +8,8 @@ const RitraContentSection = (): ReactElement => {
   const [ritraContent, setRitraContent] = useState<RitraContent | null>(null)
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -21,6 +23,7 @@ const RitraContentSection = (): ReactElement => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(event.target as HTMLFormElement)
 
     const ritraContentForm: RitraContentDto = {
@@ -33,6 +36,9 @@ const RitraContentSection = (): ReactElement => {
       .then((ritraContent) => {
         setRitraContent(ritraContent)
         setIsEditing(false)
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -72,7 +78,7 @@ const RitraContentSection = (): ReactElement => {
               />
 
               <div className='flex gap-2 mt-2'>
-                <Button color='primary' type='submit' >Confirmar</Button>
+                <Button color='primary' type='submit' isLoading={isLoading}>Confirmar</Button>
                 <Button color='secondary' onClick={() => { setIsEditing(false) }} >Cancelar</Button>
               </div>
             </form>

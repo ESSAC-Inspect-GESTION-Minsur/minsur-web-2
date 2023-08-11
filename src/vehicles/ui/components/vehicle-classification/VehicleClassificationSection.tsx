@@ -9,6 +9,7 @@ import ContextMenu from '@/shared/ui/components/ContextMenu'
 const VehicleClassificationSection = (): ReactElement => {
   const [vehicleClassifications, setVehicleClassifications, addVehicleClassification, , removeVehicleClassification] = useArrayReducer<VehicleClassification>([])
   const [isAdding, setIsAdding] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const vehicleClassificationRef = useRef<VehicleClassification | null>(null)
   const [contextMenuPos, setContextMenuPos] = useState<{ xPos: number, yPos: number } | null>(null)
 
@@ -21,6 +22,7 @@ const VehicleClassificationSection = (): ReactElement => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(event.target as HTMLFormElement)
 
     const vehicleClassificationForm: VehicleClassificationDto = {
@@ -34,17 +36,24 @@ const VehicleClassificationSection = (): ReactElement => {
         addVehicleClassification(vehicleClassification)
         setIsAdding(false)
       })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const handleRemove = (): void => {
     if (vehicleClassificationRef.current === null) return
 
+    setIsLoading(true)
     const id = vehicleClassificationRef.current.id
 
     const vehicleClassificationService = new VehicleClassificationsService()
     void vehicleClassificationService.remove(id)
       .then(() => {
         removeVehicleClassification(id)
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -95,7 +104,7 @@ const VehicleClassificationSection = (): ReactElement => {
                 id='name' type="text" name='name' />
 
               <div className='flex gap-2 mt-2'>
-                <Button color='primary' type='submit'>Confirmar</Button>
+                <Button color='primary' type='submit' isLoading={isLoading}>Confirmar</Button>
                 <Button color='secondary' onClick={() => { setIsAdding(false) }}>Cancelar</Button>
               </div>
             </form>

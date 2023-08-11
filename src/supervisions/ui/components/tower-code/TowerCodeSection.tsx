@@ -9,6 +9,7 @@ import React, { useState, type ReactElement, useEffect, type FormEvent, useRef }
 const TowerCodeSection = (): ReactElement => {
   const [towerCodes, setTowerCodes, addTowerCode, , removeTowerCode] = useArrayReducer<TowerCode>([])
   const [isAdding, setIsAdding] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const towerCodeRef = useRef<TowerCode | null>(null)
 
   const [contextMenuPos, setContextMenuPos] = useState<{ xPos: number, yPos: number } | null>(null)
@@ -22,6 +23,7 @@ const TowerCodeSection = (): ReactElement => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(event.target as HTMLFormElement)
 
     const towerCodeForm: TowerCodeDto = {
@@ -34,18 +36,24 @@ const TowerCodeSection = (): ReactElement => {
       .then((towerCode) => {
         addTowerCode(towerCode)
         setIsAdding(false)
+      }).finally(() => {
+        setIsLoading(false)
       })
   }
 
   const handleRemove = (): void => {
     if (towerCodeRef.current === null) return
 
+    setIsLoading(true)
     const id = towerCodeRef.current.id
 
     const towerCodesService = new TowerCodesService()
     void towerCodesService.remove(id)
       .then(() => {
         removeTowerCode(id)
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -96,7 +104,7 @@ const TowerCodeSection = (): ReactElement => {
                 id='code' type="text" name='code' />
 
               <div className='flex gap-2 mt-2'>
-                <Button color='primary' type='submit'>Confirmar</Button>
+                <Button color='primary' type='submit' isLoading={isLoading}>Confirmar</Button>
                 <Button color='secondary' onClick={() => { setIsAdding(false) }}>Cancelar</Button>
               </div>
             </form>

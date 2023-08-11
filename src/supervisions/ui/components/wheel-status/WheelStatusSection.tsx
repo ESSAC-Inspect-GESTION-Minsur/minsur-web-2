@@ -9,6 +9,7 @@ import React, { useState, type ReactElement, useEffect, type FormEvent, useRef }
 const WheelStatusSection = (): ReactElement => {
   const [wheelStatus, setWheelStatus, addWheelStatus, , removeWheelStatus] = useArrayReducer<WheelStatus>([])
   const [isAdding, setIsAdding] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const wheelStatusRef = useRef<WheelStatus | null>(null)
 
   const [contextMenuPos, setContextMenuPos] = useState<{ xPos: number, yPos: number } | null>(null)
@@ -22,6 +23,7 @@ const WheelStatusSection = (): ReactElement => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
+    setIsLoading(true)
     const formData = new FormData(event.target as HTMLFormElement)
 
     const wheelStatusForm: WheelStatusDto = {
@@ -35,17 +37,24 @@ const WheelStatusSection = (): ReactElement => {
         addWheelStatus(wheelStatus)
         setIsAdding(false)
       })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const handleRemove = (): void => {
     if (wheelStatusRef.current === null) return
 
+    setIsLoading(true)
     const id = wheelStatusRef.current.id
 
     const wheelStatusService = new WheelStatusService()
     void wheelStatusService.remove(id)
       .then(() => {
         removeWheelStatus(id)
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -96,7 +105,7 @@ const WheelStatusSection = (): ReactElement => {
                 id='status' type="text" name='status' />
 
               <div className='flex gap-2 mt-2'>
-                <Button color='primary' type='submit'>Confirmar</Button>
+                <Button color='primary' type='submit' isLoading={isLoading}>Confirmar</Button>
                 <Button color='secondary' onClick={() => { setIsAdding(false) }}>Cancelar</Button>
               </div>
             </form>
