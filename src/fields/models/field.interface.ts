@@ -5,13 +5,14 @@ export interface Field {
   name: string
   placeholder?: string
   type: FieldType
+  values: string[]
 
   createdAt: string
   updatedAt: string
   active: boolean
 }
 
-export interface FieldDto extends Pick<Field, 'name' | 'placeholder' | 'type'> {}
+export interface FieldDto extends Pick<Field, 'name' | 'placeholder' | 'type' | 'values'> {}
 
 export const FIELD_INITIAL_STATE: Field = {
   createdAt: '',
@@ -20,11 +21,13 @@ export const FIELD_INITIAL_STATE: Field = {
   name: '',
   placeholder: '',
   type: FieldType.TEXT,
-  active: true
+  active: true,
+  values: []
 }
 
 export const FIELD_DTO_INITIAL_STATE: FieldDto = {
   name: '',
   placeholder: '',
-  type: FieldType.TEXT
+  type: FieldType.TEXT,
+  values: []
 }

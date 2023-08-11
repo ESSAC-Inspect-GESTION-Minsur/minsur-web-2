@@ -9,6 +9,7 @@ import { FieldsService } from '@/fields/services/fields.service'
 import { toast } from 'react-toastify'
 import Table from '@/shared/ui/components/table/Table'
 import { type Action, type Column } from '@/shared/ui/components/table/types'
+import { FieldTypeText } from '@/fields/models/enums/field-type.enum'
 
 const FieldsTable = (): ReactElement => {
   const { toastId, fields, setFieldForm, removeField, updateField } = useContext(FieldContext)
@@ -83,8 +84,8 @@ const FieldsTable = (): ReactElement => {
     {
       id: 'fielType',
       columnName: 'Tipo',
-      filterFunc: (field) => field.type,
-      render: (field) => field.type,
+      filterFunc: (field) => FieldTypeText[field.type],
+      render: (field) => FieldTypeText[field.type],
       sortFunc: (a, b) => a.type > b.type ? 1 : -1
     }
   ]
@@ -93,11 +94,11 @@ const FieldsTable = (): ReactElement => {
 
   const FIELD_ACTIONS: Array<Action<Field>> = [
     {
-      icon: () => (<DeleteIcon className='w-6 h-6 cursor-pointer text-red' />),
+      icon: () => (<DeleteIcon className='w-5 h-5 cursor-pointer text-red' />),
       actionFunc: handleRemove
     },
     {
-      icon: () => (<EditIcon className='w-6 h-6 cursor-pointer' />),
+      icon: () => (<EditIcon className='w-5 h-5 cursor-pointer' />),
       actionFunc: handleUpdate
     },
     {
@@ -105,8 +106,8 @@ const FieldsTable = (): ReactElement => {
         <div className='cursor-pointer'>
           {
             field.active
-              ? (<ToggleOnIcon className='w-6 h-6 cursor-pointer text-success' />)
-              : (<ToggleOffIcon className='w-6 h-6 cursor-pointer' />)
+              ? (<ToggleOnIcon className='w-5 h-5 cursor-pointer text-success' />)
+              : (<ToggleOffIcon className='w-5 h-5 cursor-pointer' />)
           }
         </div>
       ),

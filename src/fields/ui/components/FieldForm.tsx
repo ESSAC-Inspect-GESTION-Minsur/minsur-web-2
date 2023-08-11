@@ -8,8 +8,9 @@ import { useBooleanState } from '@/shared/hooks/useBooleanState'
 import { FieldsService } from '@/fields/services/fields.service'
 import Input from '@/shared/ui/components/Input'
 import SelectInput from '@/shared/ui/components/SelectInput'
-import { FieldType } from '@/fields/models/enums/field-type.enum'
+import { FieldType, FieldTypeText, TextFieldTypes } from '@/fields/models/enums/field-type.enum'
 import Button from '@/shared/ui/components/Button'
+import FieldValuesForm from './FieldValuesForm'
 
 const FieldForm = (): ReactElement => {
   const { toastId, fieldForm, setFieldForm, addField, updateField } = useContext(FieldContext)
@@ -18,19 +19,23 @@ const FieldForm = (): ReactElement => {
   const [formAction, setFormAction] = useState<FormAction>('add')
   const [isSubmitting,, setIsSubmitting] = useBooleanState()
 
+  const [values, setValues] = useState<string[]>(fieldForm?.values ?? [])
+
   useEffect(() => {
     if (fieldForm === null) {
       setFormAction('add')
       return
     }
 
-    const { name, type, placeholder } = fieldForm
+    const { name, type, placeholder, values } = fieldForm
     setFormAction('update')
+    setValues(values)
 
     setField({
       name,
       type,
-      placeholder
+      placeholder,
+      values
     })
   }, [fieldForm])
 
@@ -47,6 +52,8 @@ const FieldForm = (): ReactElement => {
     const submitAction = formAction === 'add' ? fieldsService.create : fieldsService.update
     const onSuccess = formAction === 'add' ? addField : updateField
     const id = fieldForm?.id ?? ''
+
+    field.values = values
 
     void submitAction(field, id)
       .then((response) => {
@@ -78,27 +85,22 @@ const FieldForm = (): ReactElement => {
         <SelectInput<string>
           label='Tipo de campo'
           name='type'
-          objects={Object.values(FieldType)}
-          setValue={setFieldValue}
-          value={field.type}
+          objects={Object.values(FieldType).map(type => FieldTypeText[type])}
+          setValue={(name, value) => {
+            setFieldValue(name, TextFieldTypes[value])
+          }}
+          value={FieldTypeText[field.type]}
         />
-        {/* <div className='mt-2'>
-          <p className='font-bold text-sm'>Selecciona el tipo de campo</p>
-          <select
-            className='block w-full h-10 px-2 border-b border-solid border-blue-dark outline-none capitalize'
-            name="type" value={inputValue.type} onChange={handleChange}>
-            {
-              fieldTypes.map(fieldType => {
-                return (
-                  <option key={fieldType} value={fieldType} className='capitalize'>{fieldType}</option>
-                )
-              })
-            }
-          </select>
-        </div> */}
 
         {
+          field.type === FieldType.LIST && formAction === 'update' && (
+            <div className='mt-2'>
+              <FieldValuesForm values={values} setValues={setValues}/>
+            </div>
+          )
+        }
 
+        {
           field.type === FieldType.TEXT && (
             <div className='mt-2'>
               <Input

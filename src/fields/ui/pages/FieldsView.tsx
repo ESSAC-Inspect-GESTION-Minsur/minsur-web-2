@@ -1,7 +1,7 @@
 import React, { type ReactElement, useEffect, useState } from 'react'
 import { useArrayReducer } from '@/shared/hooks/useArrayReducer'
 import Toast from '@/shared/ui/components/Toast'
-import { FieldType } from '@/fields/models/enums/field-type.enum'
+import { FieldType, FieldTypeText } from '@/fields/models/enums/field-type.enum'
 import { type Field } from '@/fields/models/field.interface'
 import { FieldsService } from '@/fields/services/fields.service'
 import { FieldContext } from '../contexts/FieldContext'
@@ -47,7 +47,7 @@ const FieldsView = (): ReactElement => {
             {
               Object.values(FieldType).map(fieldType => {
                 return (
-                  <p className='capitalize border-b last-of-type:border-b-0 px-3 w-1/2' key={fieldType}>{fieldType}</p>
+                  <p className='capitalize border-b last-of-type:border-b-0 px-3 w-1/2' key={fieldType}>{FieldTypeText[fieldType]}</p>
                 )
               })
             }
