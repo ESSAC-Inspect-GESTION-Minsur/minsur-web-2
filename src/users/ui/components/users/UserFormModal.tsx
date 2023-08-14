@@ -95,9 +95,16 @@ const UserFormModal = ({ isOpen, onClose }: UserFormModalProps): ReactElement =>
       phone2: profile.phone2,
       email: profile.email,
       isDriver: false,
-      license: null,
-      licenseCategory: null,
-      licenseExpiration: null,
+      firstLicense: {
+        license: null,
+        category: null,
+        expiration: null
+      },
+      secondLicense: {
+        license: null,
+        category: null,
+        expiration: null
+      },
       removed: false
     })
   }, [userForm, isOpen])
@@ -171,9 +178,17 @@ const UserFormModal = ({ isOpen, onClose }: UserFormModalProps): ReactElement =>
     const profilesService = new ProfilesService()
     const id = userForm?.profile.id ?? ''
 
-    profile.license = null
-    profile.licenseCategory = null
-    profile.licenseExpiration = null
+    profile.firstLicense = {
+      license: null,
+      category: null,
+      expiration: null
+    }
+
+    profile.secondLicense = {
+      license: null,
+      category: null,
+      expiration: null
+    }
 
     void profilesService.update(profile, id)
       .then((newProfile) => {

@@ -301,7 +301,7 @@ const CheckpointsView = (): ReactElement => {
                 <p className='font-bold'>{driver?.profile.fullName}</p>
               </div>
               <div className='text-start p-2 border-b border-black'>
-                <p className='font-bold'>Nº licencia: <span className='font-normal'>{driver?.profile.license}</span></p>
+                <p className='font-bold'>Nº licencia: <span className='font-normal'>{driver?.profile.firstLicense?.license}</span></p>
               </div>
               <div className='text-start p-2'>
                 <p className='font-bold'>Firma</p>

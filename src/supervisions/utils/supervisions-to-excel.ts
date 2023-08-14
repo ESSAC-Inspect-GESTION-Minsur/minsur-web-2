@@ -78,7 +78,7 @@ export const supervisionsToExcel = (supervision: Supervision): Record<string, an
       }
       case 'conductor': {
         excelSupervision['NOMBRES Y APELLIDOS DEL CONDUCTOR'] = profile.profile.fullName
-        excelSupervision['N° DE LICENCIA DE CONDUCIR'] = profile.profile.license ?? 'N/A'
+        excelSupervision['N° DE LICENCIA DE CONDUCIR'] = profile.profile.firstLicense?.license ?? 'N/A'
         break
       }
     }
