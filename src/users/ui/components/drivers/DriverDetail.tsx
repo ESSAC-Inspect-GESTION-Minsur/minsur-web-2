@@ -2,7 +2,7 @@ import Button from '@/shared/ui/components/Button'
 import Divider from '@/shared/ui/components/Divider'
 import React, { useContext, type ReactElement } from 'react'
 import { DriverContext } from '../../contexts/DriverContext'
-import { isDate } from '@/shared/utils'
+import LicenseDetail from './LicenseDetail'
 
 interface DriverDetailProps {
   toggleForm: () => void
@@ -14,13 +14,6 @@ const DriverDetail = ({ toggleForm, toggleAssignCompanyModal }: DriverDetailProp
 
   if (!selectedDriver) {
     return (<p>No se ha seleccionado un conductor</p>)
-  }
-
-  const formatLicenseExpiration = (): string => {
-    const licenseExpiration = selectedDriver.licenseExpiration ?? 'No registrado'
-    if (!isDate(licenseExpiration)) return 'No registrado'
-
-    return new Date(licenseExpiration).toLocaleDateString()
   }
 
   const handleEdit = (): void => {
@@ -36,15 +29,17 @@ const DriverDetail = ({ toggleForm, toggleAssignCompanyModal }: DriverDetailProp
         <p><span className='font-semibold uppercase'>Nombre:</span> {selectedDriver.name}</p>
         <p><span className='font-semibold uppercase'>Apellido:</span> {selectedDriver.lastName}</p>
         <p><span className='font-semibold uppercase'>Dni:</span> {selectedDriver.dni}</p>
-        <p><span className='font-semibold uppercase'>Licencia:</span> {selectedDriver.license}</p>
-        <p><span className='font-semibold uppercase'>Categoría:</span> {selectedDriver.licenseCategory ?? 'No registrado'}</p>
-        <p><span className='font-semibold uppercase'>Vencimiento Licencia:</span> {formatLicenseExpiration()}</p>
+
+        <LicenseDetail license={selectedDriver.firstLicense} index={1}/>
+        <LicenseDetail license={selectedDriver.secondLicense} index={2}/>
+
       </div>
 
       {
         selectedDriver && selectedDriver.companies.length > 0 && (
           <div>
-            <p>Empresas:</p>
+            <p className='uppercase font-semibold'>Empresas:</p>
+            <Divider className='my-1' />
             <ul className='ml-3'>
               {
                 selectedDriver.companies.map(company => (

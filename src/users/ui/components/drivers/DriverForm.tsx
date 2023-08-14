@@ -29,6 +29,7 @@ const DriverFormModal = ({ isOpen, onClose }: DriverFormModalProps): ReactElemen
   const [selectedCompany, setSelectedCompany] = useState<Company>(INITIAL_STATE_COMPANY)
 
   const [formAction, setFormAction] = useState<FormAction>('add')
+  const [hasSecondLicense, setHasSecondLicense] = useState<boolean>(false)
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
@@ -40,16 +41,15 @@ const DriverFormModal = ({ isOpen, onClose }: DriverFormModalProps): ReactElemen
       return
     }
 
-    const { name, lastName, dni, license, licenseCategory, licenseExpiration, isDriver } = driverForm
+    const { name, lastName, dni, firstLicense, secondLicense, isDriver } = driverForm
     setFormAction('update')
 
     setDriver({
       name,
       lastName,
       dni,
-      license: license ?? '',
-      licenseCategory: licenseCategory ?? '',
-      licenseExpiration: licenseExpiration ?? new Date().toISOString().substring(0, 10),
+      firstLicense,
+      secondLicense,
       isDriver,
       phone1: null,
       phone2: null,
@@ -57,6 +57,17 @@ const DriverFormModal = ({ isOpen, onClose }: DriverFormModalProps): ReactElemen
       removed: false
     })
   }, [driverForm])
+
+  useEffect(() => {
+    setDriver({
+      ...driver,
+      secondLicense: {
+        license: hasSecondLicense ? '' : null,
+        category: hasSecondLicense ? '' : null,
+        expiration: hasSecondLicense ? new Date().toISOString() : null
+      }
+    })
+  }, [hasSecondLicense])
 
   useEffect(() => {
     const companiesServices = new CompaniesService()
@@ -92,8 +103,11 @@ const DriverFormModal = ({ isOpen, onClose }: DriverFormModalProps): ReactElemen
     const onFinishAction = formAction === 'add' ? addDriver : updateDriver
     const id = formAction === 'add' ? '' : driverForm?.id ?? ''
 
-    driver.licenseCategory = driver.licenseCategory === '' ? null : driver.licenseCategory
-    driver.license = driver.license === '' ? null : driver.license
+    driver.firstLicense.license = driver.firstLicense.license === '' ? null : driver.firstLicense.license
+    driver.firstLicense.category = driver.firstLicense.category === '' ? null : driver.firstLicense.category
+
+    driver.secondLicense.license = driver.secondLicense.license === '' ? null : driver.secondLicense.license
+    driver.secondLicense.category = driver.secondLicense.category === '' ? null : driver.secondLicense.category
 
     driver.phone1 = null
     driver.phone2 = null
@@ -197,40 +211,142 @@ const DriverFormModal = ({ isOpen, onClose }: DriverFormModalProps): ReactElemen
         }
 
         {
-          driver.license !== null &&
+          driver.firstLicense.license !== null &&
           <Input
             label='Licencia'
             name='license'
             placeholder='Ingresa licencia'
-            value={driver.license}
-            setValue={setDriverValue}
+            value={driver.firstLicense.license}
+            setValue={(name, value) => {
+              setDriver({
+                ...driver,
+                firstLicense: {
+                  ...driver.firstLicense,
+                  license: String(value)
+                }
+              })
+            }}
             type='text'
           />
         }
 
         {
-          driver.licenseCategory !== null &&
+          driver.firstLicense.category !== null &&
           <Input
             label='Categoría de Licencia'
             name='licenseCategory'
             placeholder='Ingresa categoría de licencia'
-            value={driver.licenseCategory}
-            setValue={setDriverValue}
+            value={driver.firstLicense.category}
+            setValue={(name, value) => {
+              setDriver({
+                ...driver,
+                firstLicense: {
+                  ...driver.firstLicense,
+                  category: String(value)
+                }
+              })
+            }}
             type='text'
             required={false}
           />
         }
 
         {
-          driver.licenseExpiration !== null && isDate(driver.licenseExpiration) &&
+          driver.firstLicense.expiration !== null && isDate(driver.firstLicense.expiration) &&
           <Input
             label='Fecha de vencimiento de la licencia'
             name='licenseExpiration'
             placeholder=''
-            value={new Date(driver.licenseExpiration).toISOString().substring(0, 10)}
-            setValue={setDriverValue}
+            value={new Date(driver.firstLicense.expiration).toISOString().substring(0, 10)}
+            setValue={(name, value) => {
+              setDriver({
+                ...driver,
+                firstLicense: {
+                  ...driver.firstLicense,
+                  expiration: String(value)
+                }
+              })
+            }}
             type='date'
           />
+        }
+
+        <Input
+          label='¿Tiene segunda licencia?'
+          name='hasSecondLicense'
+          placeholder=''
+          value={hasSecondLicense ? 'true' : 'false'}
+          setValue={() => {
+            setHasSecondLicense(!hasSecondLicense)
+          }}
+          type='checkbox'
+        />
+
+        {
+          hasSecondLicense && (
+            <>
+              {
+                driver.secondLicense.license !== null &&
+                <Input
+                  label='Licencia'
+                  name='license'
+                  placeholder='Ingresa licencia'
+                  value={driver.secondLicense.license}
+                  setValue={(name, value) => {
+                    setDriver({
+                      ...driver,
+                      secondLicense: {
+                        ...driver.secondLicense,
+                        license: String(value)
+                      }
+                    })
+                  }}
+                  type='text'
+                />
+              }
+
+              {
+                driver.secondLicense.category !== null &&
+                <Input
+                  label='Categoría de Licencia'
+                  name='licenseCategory'
+                  placeholder='Ingresa categoría de licencia'
+                  value={driver.secondLicense.category}
+                  setValue={(name, value) => {
+                    setDriver({
+                      ...driver,
+                      secondLicense: {
+                        ...driver.secondLicense,
+                        category: String(value)
+                      }
+                    })
+                  }}
+                  type='text'
+                  required={false}
+                />
+              }
+
+              {
+                driver.secondLicense.expiration !== null && isDate(driver.secondLicense.expiration) &&
+                <Input
+                  label='Fecha de vencimiento de la licencia'
+                  name='licenseExpiration'
+                  placeholder=''
+                  value={new Date(driver.secondLicense.expiration).toISOString().substring(0, 10)}
+                  setValue={(name, value) => {
+                    setDriver({
+                      ...driver,
+                      secondLicense: {
+                        ...driver.secondLicense,
+                        expiration: String(value)
+                      }
+                    })
+                  }}
+                  type='date'
+                />
+              }
+            </>
+          )
         }
 
         <div className='mt-3 flex gap-3 justify-end'>
@@ -239,7 +355,7 @@ const DriverFormModal = ({ isOpen, onClose }: DriverFormModalProps): ReactElemen
         </div>
       </form>
 
-      <RecoverDriverModal isOpen={isRecoverModalOpen} onClose={handleCloseRecoverModal} profile={driver}/>
+      <RecoverDriverModal isOpen={isRecoverModalOpen} onClose={handleCloseRecoverModal} profile={driver} />
     </Modal>
 
   )

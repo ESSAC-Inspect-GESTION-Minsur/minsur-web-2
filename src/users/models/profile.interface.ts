@@ -1,4 +1,5 @@
 import { type Company } from '../../companies/models/company.interface'
+import { type License } from './types/license'
 
 export interface Profile {
   id: string
@@ -8,9 +9,8 @@ export interface Profile {
   phone1: string | null
   phone2: string | null
   email: string | null
-  license: string | null
-  licenseCategory: string | null
-  licenseExpiration: string | null
+  firstLicense: License
+  secondLicense: License
   removed: boolean
 
   fullName: string
@@ -33,10 +33,17 @@ export const PROFILE_INITIAL_STATE: Profile = {
   phone1: '',
   phone2: '',
   email: '',
-  license: '',
-  licenseCategory: '',
+  firstLicense: {
+    license: '',
+    category: '',
+    expiration: new Date().toISOString()
+  },
+  secondLicense: {
+    license: null,
+    category: null,
+    expiration: null
+  },
   removed: false,
-  licenseExpiration: new Date().toISOString(),
   isDriver: false,
   fullName: '',
   companies: [],
@@ -52,9 +59,16 @@ export const PROFILE_DTO_INITIAL_STATE: ProfileDto = {
   phone1: '',
   phone2: '',
   email: '',
-  license: '',
-  licenseCategory: '',
+  firstLicense: {
+    license: '',
+    category: '',
+    expiration: new Date().toISOString()
+  },
+  secondLicense: {
+    license: null,
+    category: null,
+    expiration: null
+  },
   isDriver: false,
-  licenseExpiration: new Date().toISOString(),
   removed: false
 }

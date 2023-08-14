@@ -74,11 +74,11 @@ const DriverTable = (): ReactElement => {
     {
       id: 'license',
       columnName: 'Licencia',
-      render: (driver: Profile) => driver.license ?? 'No registrado',
-      filterFunc: (driver: Profile) => driver.license ?? 'No registrado',
+      render: (driver: Profile) => driver.firstLicense.license ?? 'No registrado',
+      filterFunc: (driver: Profile) => driver.firstLicense.license ?? 'No registrado',
       sortFunc: (a: Profile, b: Profile) => {
-        const aLicense = a.license ?? 'No registrado'
-        const bLicense = b.license ?? 'No registrado'
+        const aLicense = a.firstLicense.license ?? 'No registrado'
+        const bLicense = b.firstLicense.license ?? 'No registrado'
 
         return aLicense.localeCompare(bLicense)
       }
@@ -86,11 +86,11 @@ const DriverTable = (): ReactElement => {
     {
       id: 'licenseCategory',
       columnName: 'Categoría',
-      render: (driver: Profile) => driver.licenseCategory ?? 'No registrado',
-      filterFunc: (driver: Profile) => driver.licenseCategory ?? 'No registrado',
+      render: (driver: Profile) => driver.firstLicense.category ?? 'No registrado',
+      filterFunc: (driver: Profile) => driver.firstLicense.category ?? 'No registrado',
       sortFunc: (a: Profile, b: Profile) => {
-        const aLicenseCategory = a.licenseCategory ?? 'No registrado'
-        const bLicenseCategory = b.licenseCategory ?? 'No registrado'
+        const aLicenseCategory = a.firstLicense.category ?? 'No registrado'
+        const bLicenseCategory = b.firstLicense.category ?? 'No registrado'
 
         return aLicenseCategory.localeCompare(bLicenseCategory)
       }
@@ -134,7 +134,7 @@ const DriverTable = (): ReactElement => {
 
   const ACTIONS: Array<Action<Profile>> = [
     {
-      icon: () => (<EyeIcon className='cursor-pointer w-5 h-5' />),
+      icon: (driver) => (<EyeIcon className={`cursor-pointer w-5 h-5 ${selectedDriver?.id === driver.id ? 'text-success' : ''}`} />),
       actionFunc: handleShowDriver
     },
     {
