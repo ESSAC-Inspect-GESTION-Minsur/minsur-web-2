@@ -20,7 +20,6 @@ const LicenseDetail = ({ license, index }: LicenseDetailProps): ReactElement => 
   return (
     <div className='my-2'>
       <p className='uppercase font-semibold text-base'>Licencia {index}</p>
-      <Divider className='my-1'/>
       <p><span className='font-semibold uppercase'>Licencia:</span> {license.license ?? 'No registrado'}</p>
       <p><span className='font-semibold uppercase'>Categoría:</span> {license.category ?? 'No registrado'}</p>
       <p><span className='font-semibold uppercase'>Vencimiento Licencia:</span> {formatLicenseExpiration()}</p>

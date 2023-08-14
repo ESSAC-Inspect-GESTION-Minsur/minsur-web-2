@@ -30,7 +30,9 @@ const DriverDetail = ({ toggleForm, toggleAssignCompanyModal }: DriverDetailProp
         <p><span className='font-semibold uppercase'>Apellido:</span> {selectedDriver.lastName}</p>
         <p><span className='font-semibold uppercase'>Dni:</span> {selectedDriver.dni}</p>
 
+        <Divider className='my-1'/>
         <LicenseDetail license={selectedDriver.firstLicense} index={1}/>
+        <Divider className='my-1'/>
         <LicenseDetail license={selectedDriver.secondLicense} index={2}/>
 
       </div>
