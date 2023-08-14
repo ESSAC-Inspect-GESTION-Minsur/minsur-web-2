@@ -37,11 +37,12 @@ const DriverDetail = ({ toggleForm, toggleAssignCompanyModal }: DriverDetailProp
 
       </div>
 
+      <Divider className='my-1' />
       {
         selectedDriver && selectedDriver.companies.length > 0 && (
           <div>
             <p className='uppercase font-semibold'>Empresas:</p>
-            <Divider className='my-1' />
+
             <ul className='ml-3'>
               {
                 selectedDriver.companies.map(company => (
