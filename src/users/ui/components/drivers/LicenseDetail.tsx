@@ -1,4 +1,3 @@
-import Divider from '@/shared/ui/components/Divider'
 import { isDate } from '@/shared/utils'
 import { type License } from '@/users/models/types/license'
 import moment from 'moment'
