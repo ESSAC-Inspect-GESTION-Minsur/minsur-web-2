@@ -88,9 +88,22 @@ const SupervisionsTable = ({ supervisions, showFilter, setSupervisionsFiltered }
     {
       id: 'licensePlate',
       columnName: 'Placa Tracto',
-      filterFunc: (supervision) => supervision.vehicle.licensePlate,
-      render: (supervision) => supervision.vehicle.licensePlate,
-      sortFunc: (a, b) => a.vehicle.licensePlate.localeCompare(b.vehicle.licensePlate)
+      filterFunc: (supervision) => {
+        if (supervision.vehicle === null) return 'N/A'
+
+        return supervision.vehicle.licensePlate
+      },
+      render: (supervision) => {
+        if (supervision.vehicle === null) return 'N/A'
+
+        return supervision.vehicle.licensePlate
+      },
+      sortFunc: (a, b) => {
+        if (a.vehicle === null) return -1
+        if (b.vehicle === null) return 1
+
+        return a.vehicle.licensePlate.localeCompare(b.vehicle.licensePlate)
+      }
     },
     {
       id: 'cartLicensePlate',

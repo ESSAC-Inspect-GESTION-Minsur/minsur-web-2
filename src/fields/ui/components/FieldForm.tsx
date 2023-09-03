@@ -40,6 +40,7 @@ const FieldForm = (): ReactElement => {
   }, [fieldForm])
 
   const handleCancel = (): void => {
+    setValues([])
     setFieldForm(null)
     reset()
   }

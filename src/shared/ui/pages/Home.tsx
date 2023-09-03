@@ -107,7 +107,7 @@ const Home = (): ReactElement => {
                 <p>{dateRangeFromStore.isoFormattedStringDateEnd()}</p>
               </div>
             </div>
-            <Button color='secondary' onClick={findAll} isLoading={isLoading}>Buscar recorridos</Button>
+            <Button color='secondary' onClick={findAll} isLoading={isLoading}>Buscar supervisiones</Button>
           </div>
         </div>
 
