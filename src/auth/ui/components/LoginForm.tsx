@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { type ReactElement, useEffect, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -13,7 +14,7 @@ const LoginForm = (): ReactElement => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [hasFailed, setHasFailed] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -29,14 +30,17 @@ const LoginForm = (): ReactElement => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
 
-    void dispatch(login(userLogin)).unwrap()
-      .then(response => {
-        navigate('/inicio')
-      })
-      .catch(error => {
-        const { message } = error.data
-        setErrorMessage(message.toUpperCase())
-      })
+    setHasFailed(true)
+    setErrorMessage('Las credenciales no corresponden')
+
+    // void dispatch(login(userLogin)).unwrap()
+    //   .then(response => {
+    //     navigate('/inicio')
+    //   })
+    //   .catch(error => {
+    //     const { message } = error.data
+    //     setErrorMessage(message.toUpperCase())
+    //   })
   }
 
   return (

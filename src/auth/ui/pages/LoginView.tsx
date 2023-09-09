@@ -1,17 +1,10 @@
-import React, { type ReactElement, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { type ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { isAuthenticated } from '@/shared/config/store/features/auth-slice'
 
 import LoginForm from '../components/LoginForm'
 
 const Login = (): ReactElement => {
   const navigate = useNavigate()
-  const authenticated = useSelector(isAuthenticated)
-
-  useEffect(() => {
-    if (authenticated) navigate('/inicio')
-  }, [])
 
   const goToTermsAndConditions = (): void => {
     navigate('/terminos-y-condiciones')
