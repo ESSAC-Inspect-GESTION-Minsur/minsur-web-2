@@ -29,18 +29,14 @@ const LoginForm = (): ReactElement => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-
-    setHasFailed(true)
-    setErrorMessage('Las credenciales no corresponden')
-
-    // void dispatch(login(userLogin)).unwrap()
-    //   .then(response => {
-    //     navigate('/inicio')
-    //   })
-    //   .catch(error => {
-    //     const { message } = error.data
-    //     setErrorMessage(message.toUpperCase())
-    //   })
+    void dispatch(login(userLogin)).unwrap()
+      .then(response => {
+        navigate('/inicio')
+      })
+      .catch(error => {
+        const { message } = error.data
+        setErrorMessage(message.toUpperCase())
+      })
   }
 
   return (
