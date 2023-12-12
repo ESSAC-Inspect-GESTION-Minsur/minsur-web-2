@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {
   dotenv.config({ path: '.env.production' });
 }
 
-const PORT = parseInt(process.env.VITE_PORT) ?? 5000;
+const PORT = process.env.VITE_PORT ?? 5000;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,6 +21,6 @@ export default defineConfig({
     ],
   },
   server: {
-    port: PORT
+    port: +PORT
   }
 })
